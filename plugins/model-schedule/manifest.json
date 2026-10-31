@@ -1,0 +1,31 @@
+{
+	"id": "model-schedule",
+	"name": "模型调度",
+	"nameEn": "Model Schedule",
+	"version": "0.2.0",
+	"icon": "⏱️",
+	"description": "按时段配置主 bot 与子 bot 的模型/思考档位：可视化编辑时间窗（时区可搜索选择 + 本地时间预览）、可折叠窗口卡、当前生效窗口高亮、未保存修改保护，写入 ~/.pi/agent/model-schedule.jsonc，保存即生效。",
+	"descriptionEn": "Time-of-day model routing for main/sub bots: searchable timezone picker with live local time, collapsible window cards, current-window highlight and unsaved-change protection, written to ~/.pi/agent/model-schedule.jsonc.",
+	"apiVersion": 2,
+	"permissions": [
+		"fs:read",
+		"fs:write",
+		"http",
+		"ui"
+	],
+	"settings": [],
+	"ui": {
+		"settings.pages": [
+			{
+				"id": "config",
+				"label": "模型调度",
+				"labelEn": "Model Schedule",
+				"icon": "⏱️",
+				"hint": "按时段编辑主 bot / 子 bot 的模型与思考档位",
+				"kind": "page",
+				"view": "config",
+				"order": 60
+			}
+		]
+	}
+}
