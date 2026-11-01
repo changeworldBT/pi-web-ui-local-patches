@@ -52,3 +52,22 @@ node ~/.pi/agent/patches/approval-rm-rf-fix.mjs           # 只查状态
   同时把客户端热重载比较常量改为同时容忍新旧 buildId，避免升级窗口期循环刷新。
 - 生效条件：**无需重启服务**（静态文件即时读取；仅 buildIdCache 可能残留旧值，
   脚本已通过双值容忍规避）。浏览器强制刷新一次（Ctrl+Shift+R）即可加载新 bundle。
+
+## imessage-dismiss（iMessage 会话管理与移出）
+
+- 目标文件：`~/.pi/agent/npm/node_modules/pi-web-ui/dist/server/` 下 4 个文件
+  （agent-service.js / index.js / plugins.js / plugin-api-catalog.js）
+- 作用：
+  1. 历史去重：运行列表持有的会话不再出现在「历史对话」；移出/关闭后 800ms 重推；
+  2. 插件移出链路：`host.dismissConversation` → `conversationDismisser` → `dismissForPlugins`
+     → `dismissConversation`（转录保留；假成功防护=移除后核实确实不在）；
+  3. 子代理不出现在插件的运行列表（`listRunningForPlugins` 跳过 `isSubagent`）。
+- 验证版本：pi-web-ui **0.114.2**。升级后跑：
+
+```bash
+node ~/.pi/agent/patches/pi-web-ui-imessage-dismiss.patch.js
+sudo systemctl restart pi-web-ui
+```
+
+- 幂等：指纹行已存在 → SKIP；锚点命中数 ≠1 → SKIP 并提示人工核对，不写坏文件。
+- 配套插件端：github.com/changeworldBT/pi-web-photon（/remove、/sessions 主会话列表）。
